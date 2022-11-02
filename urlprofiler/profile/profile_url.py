@@ -13,6 +13,8 @@ Typical Usage:
 {....}
 """
 
+import sys
+
 from urlprofiler.http.request import Request
 from urlprofiler.ssl.cert_info import CertInfo
 
@@ -57,3 +59,31 @@ def profile_url(url):
     url_info.update(cert_info.get_ip_address())
 
     return url_info
+
+
+def profile_url_cli():
+    """
+    Implements profile_url with command line args
+
+    Instantiates profile_url() and fetches a value from the command line via
+    argv. If no arguments are found via argv, an error message is printed.
+    Otherwise, profile_url() is executed and the resut pretty printed to the
+    terminal.
+
+    Args:
+        None
+    
+    Returns:
+        None
+    
+    Raises:
+        None
+    """
+
+    args = sys.argv[1:]
+    if len(args) < 1:
+        print("Usage: urlprofiler https://example.com")
+    
+    for arg in args:
+        profile = profile_url(arg)
+        print(profile)
