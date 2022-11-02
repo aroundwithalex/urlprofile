@@ -70,9 +70,12 @@ def test_status_code(requests):
         None 
     """
 
-    status_code = requests.get_status_code()
+    status_response = requests.get_status_code()
 
-    assert status_code == {302: 'Found'}
+    status_code = status_response["http_status"]["status_code"]
+    status_info = status_response["http_status"]["status_info"]
+
+    assert isinstance(status_code, int) and isinstance(status_info, str)
 
 def test_track_url(requests):
     """
@@ -95,7 +98,7 @@ def test_track_url(requests):
     expected_output = {
         "was_redirected": True,
         "redirect_history": None,
-        "url": "https://httpbin.org/redirect/2"
+        "end_url": "https://httpbin.org/redirect/2"
     }
     assert url_history == expected_output
 
