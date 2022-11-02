@@ -40,7 +40,7 @@ def validate_url(url):
         UrlException if URL is invalid
     """
 
-    if not url.strip().startswith('http'):
+    if not url.strip().startswith(('http://', 'https://')):
         raise UrlException(f"{url} should start with http or https")
     
     parsed_url = tldextract.extract(url)

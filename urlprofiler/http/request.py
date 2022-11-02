@@ -11,7 +11,9 @@ Typical Usage:
 """
 
 import httpx
-from http.client import responses 
+from http.client import responses
+
+from urlprofiler.url.validator import validate_url
 
 class Request:
 
@@ -43,7 +45,7 @@ class Request:
             None
         """
 
-        self.url = url
+        self.url = validate_url(url)
         self.response = httpx.get(url, timeout=timeout)
     
     def get_status_code(self):
@@ -63,11 +65,18 @@ class Request:
         Raises:
             None
         """
+        
+        status_codes = {
+            "http_status": {
+                "status_code": None,
+                "status_info": ""
+            }
+        }
 
-        status_code = self.response.status_code
-        meaning = responses[status_code]
+        status_codes["http_status"]["status_code"] = self.response.status_code
+        status_codes["http_status"]["status_info"] = responses[self.response.status_code]
 
-        return {status_code: meaning}
+        return status_codes
     
     def track_url(self):
         """
@@ -89,7 +98,7 @@ class Request:
         metadata = {
             "was_redirected": False,
             "redirect_history": None,
-            "url": self.url
+            "end_url": self.url
         }
 
         if self.response.is_redirect:
