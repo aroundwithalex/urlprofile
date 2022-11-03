@@ -113,7 +113,7 @@ class CertInfo:
 
             cert_info[key] = dict(sum(value, ()))
 
-        return cert_info
+        return {"ssl": cert_info}
 
     def get_ip_address(self, hostname=None):
         """
