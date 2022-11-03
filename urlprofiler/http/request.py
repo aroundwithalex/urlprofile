@@ -10,14 +10,16 @@ Typical Usage:
     200
 """
 
-import httpx
 from http.client import responses
+
+import httpx
 
 from urlprofiler.url.validator import validate_url
 
+
 class Request:
 
-    """ 
+    """
     Makes a HTTP request and returns resulting data
 
     This class contains various methods that fetch a URL, return the status
@@ -37,17 +39,17 @@ class Request:
 
         Args:
             url: URL to be profiled
-        
+
         Returns:
             None
-        
+
         Raises:
             None
         """
 
         self.url = validate_url(url)
         self.response = httpx.get(url, timeout=timeout)
-    
+
     def get_status_code(self):
         """
         Returns the status code and its meaning
@@ -57,40 +59,37 @@ class Request:
 
         Args:
             None
-        
+
         Returns:
             Status code and meaning as dictionary e.g.,
             {200: "OK"}
-        
+
         Raises:
             None
         """
-        
-        status_codes = {
-            "http_status": {
-                "status_code": None,
-                "status_info": ""
-            }
-        }
+
+        status_codes = {"http_status": {"status_code": None, "status_info": ""}}
 
         status_codes["http_status"]["status_code"] = self.response.status_code
-        status_codes["http_status"]["status_info"] = responses[self.response.status_code]
+        status_codes["http_status"]["status_info"] = responses[
+            self.response.status_code
+        ]
 
         return status_codes
-    
+
     def track_url(self):
         """
         Checks for redirects and returns actual URL
 
-        Looks through the response history to check for redirects and returns 
+        Looks through the response history to check for redirects and returns
         the actual URL that was resolved.
 
         Args:
             None
-        
+
         Returns:
             None
-        
+
         Raises:
             None
         """
@@ -98,18 +97,18 @@ class Request:
         metadata = {
             "was_redirected": False,
             "redirect_history": None,
-            "end_url": self.url
+            "end_url": self.url,
         }
 
         if self.response.is_redirect:
             metadata["was_redirected"] = True
-        
+
         if self.response.history:
             metadata["redirect_history"] = self.response.history
-        
+
         if self.response.url != self.url:
             metadata["url"] = self.response.url
-        
+
         return metadata
 
     def get_connection_data(self):
@@ -122,7 +121,7 @@ class Request:
 
         Args:
             None
-        
+
         Returns:
             Dictionary with latency, HTTP Version and cookies e.g.,
             {
@@ -130,8 +129,8 @@ class Request:
                 "HTTP Version": "HTTP/2",
                 "Cookes": ["Yum Yum"]
             }
-        
-        Raises: 
+
+        Raises:
             None
         """
 
@@ -142,5 +141,5 @@ class Request:
         return {
             "Latency (seconds)": latency,
             "HTTP Version": http_version,
-            "Cookies": cookies
+            "Cookies": cookies,
         }
