@@ -14,6 +14,7 @@ Typical Usage:
 """
 
 import sys
+from pprint import pprint
 
 from urlprofiler.http.request import Request
 from urlprofiler.ssl.cert_info import CertInfo
@@ -86,4 +87,4 @@ def profile_url_cli():
     
     for arg in args:
         profile = profile_url(arg)
-        print(profile)
+        pprint(profile, sort_dicts=False, indent=3)
