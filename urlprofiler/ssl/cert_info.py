@@ -76,6 +76,8 @@ class CertInfo:
         """
 
         context = ssl.create_default_context(cafile=certifi.where())
+        context.minimum_version = ssl.TLSVersion.TLSv1_2
+        
         with context.wrap_socket(
             socket.socket(), server_hostname=self.hostname
         ) as _socket:
