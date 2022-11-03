@@ -1,5 +1,3 @@
-![Workflow](https://github.com/github/docs/actions/workflows/python-app.yml/badge.svg)
-
 # urlprofiler
 
 **urlprofiler** fetches metadata about websites. For instance:
