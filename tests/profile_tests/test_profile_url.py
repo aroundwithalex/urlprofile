@@ -123,4 +123,4 @@ def test_profile_url_with_multiple_args(capsys):
     metadata = profile_url_cli()
     captured = capsys.readouterr().out
     filtered_capture = filter(None, captured.split("\n"))
-    assert len(list(filtered_capture)) == 2
+    assert len(list(filtered_capture)) == 54
